@@ -9,13 +9,15 @@ import { GOOGLE_PLAY_URL } from "@/lib/site";
 import { SITE_FAQ_ITEMS } from "@/lib/site-faq";
 import { trackEvent } from "@/lib/analytics";
 
+const MEDIA_CDN = "https://vybein-media.sgp1.cdn.digitaloceanspaces.com";
+
 /** Final CTA section — mobile-only promo art (portrait). */
 const DOWNLOAD_CTA_MOBILE_BANNER_URL =
-  "https://res.cloudinary.com/dgehkce6s/image/upload/v1777655195/WhatsApp_Image_2026-05-01_at_10.03.19_PM_gqxfgy.jpg";
+  `${MEDIA_CDN}/image/upload/WhatsApp_Image_2026-05-01_at_10.03.19_PM_gqxfgy.jpg`;
 
 /** How it works — phone mockup screen (app UI screenshot). */
 const HOW_IT_WORKS_MOCKUP_IMAGE_URL =
-  "https://res.cloudinary.com/dgehkce6s/image/upload/v1778134863/1st_image_1_ms1ztg.png";
+  `${MEDIA_CDN}/image/upload/1st_image_1_ms1ztg.png`;
 
 type SplitSide = { src: string; alt: string; label: string; priority?: boolean };
 
@@ -502,7 +504,7 @@ export default function HomePage() {
               <div className="relative mx-auto max-w-md overflow-hidden rounded-[2rem] border border-gray-200/90 bg-white shadow-2xl shadow-gray-900/10 ring-1 ring-black/[0.04]">
                 <div className="relative aspect-[4/3]">
                   <Image
-                    src="https://res.cloudinary.com/dgehkce6s/image/upload/v1777655195/WhatsApp_Image_2026-05-01_at_10.03.18_PM_m6dgqi.jpg"
+                    src={`${MEDIA_CDN}/image/upload/WhatsApp_Image_2026-05-01_at_10.03.18_PM_m6dgqi.jpg`}
                     alt="Person using phone with a sense of trust and control"
                     fill
                     className="object-cover"
