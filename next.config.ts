@@ -13,11 +13,23 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "vybein.apnapackers.in",
+      },
+      {
+        protocol: "https",
         hostname: "blog.vybein.com",
       },
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "vybein-media.sgp1.cdn.digitaloceanspaces.com",
+      },
+      {
+        protocol: "https",
+        hostname: "vybein-media.sgp1.digitaloceanspaces.com",
       },
       {
         protocol: "https",

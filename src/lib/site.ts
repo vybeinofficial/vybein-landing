@@ -4,7 +4,7 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://vybein.com"
 export const API_BASE_URL =
   process.env.API_BASE_URL ||
   process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "https://api.vybein.com/api/v1";
+  "https://vybein.apnapackers.in/api/v1";
 
 export const GOOGLE_PLAY_URL =
   "https://play.google.com/store/apps/details?id=com.vybein.vybein&pcampaignid=web_share";
