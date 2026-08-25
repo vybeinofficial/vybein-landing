@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join Vybein – Referral Invite</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #00b4ab 0%, #007d78 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      color: #00b4ab;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .tagline {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    .reward-badge {
+      background: linear-gradient(135deg, #e8fffe, #ccf5f3);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+    .reward-badge p {
+      color: #555;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .code-box {
+      display: inline-block;
+      background: #00b4ab;
+      color: #fff;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      padding: 12px 28px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      user-select: all;
+    }
+    .code-box:hover { opacity: 0.88; }
+    .copied-hint {
+      font-size: 11px;
+      color: #00b4ab;
+      margin-top: 6px;
+      height: 16px;
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+    .copied-hint.show { opacity: 1; }
+    .steps {
+      text-align: left;
+      margin-bottom: 28px;
+    }
+    .steps h3 {
+      font-size: 15px;
+      color: #333;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .step-num {
+      width: 24px; height: 24px;
+      background: #00b4ab;
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step p { font-size: 14px; color: #555; line-height: 1.4; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: opacity 0.2s, transform 0.1s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:active { transform: scale(0.98); opacity: 0.9; }
+    .btn-android {
+      background: linear-gradient(135deg, #00b4ab, #007d78);
+      color: #fff;
+    }
+    .btn-ios {
+      background: #000;
+      color: #fff;
+    }
+    .redirect-msg {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 8px;
+    }
+    #countdown { font-weight: 700; color: #00b4ab; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">Vybein</div>
+    <div class="tagline">Social meetups. Real connections.</div>
+
+    <div class="reward-badge">
+      <p>Your friend invited you! Use this code during signup:</p>
+      <div class="code-box" id="codeBox" onclick="copyCode()">—</div>
+      <div class="copied-hint" id="copiedHint">✓ Copied!</div>
+    </div>
+
+    <div class="steps">
+      <h3>How it works</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <p>Download Vybein from the store below.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p>Open the app and sign up.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p>Go to <strong>Refer &amp; Earn</strong> and enter the code — you'll get ₹5 instantly!</p>
+      </div>
+    </div>
+
+    <a id="androidBtn" class="btn btn-android" href="#">⬇ Download on Google Play</a>
+    <a id="iosBtn" class="btn btn-ios" href="#" style="display:none">⬇ Download on App Store</a>
+
+    <p class="redirect-msg">Redirecting in <span id="countdown">3</span>s…</p>
+  </div>
+
+  <script>
+    (function () {
+      // ── Extract referral code from URL ──────────────────────────────────────
+      var params = new URLSearchParams(window.location.search);
+      var code   = (params.get('code') || '').toUpperCase();
+
+      var codeBox   = document.getElementById('codeBox');
+      var countdownEl = document.getElementById('countdown');
+
+      if (code) {
+        codeBox.textContent = code;
+      } else {
+        codeBox.textContent = '—';
+        document.querySelector('.reward-badge p').textContent =
+          'Download Vybein and start meeting people!';
+      }
+
+      // ── Copy code on tap/click ───────────────────────────────────────────────
+      window.copyCode = function () {
+        if (!code) return;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code).then(showCopied).catch(fallbackCopy);
+        } else {
+          fallbackCopy();
+        }
+      };
+      function fallbackCopy() {
+        var ta = document.createElement('textarea');
+        ta.value = code;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showCopied();
+      }
+      function showCopied() {
+        var hint = document.getElementById('copiedHint');
+        hint.classList.add('show');
+        setTimeout(function () { hint.classList.remove('show'); }, 1800);
+      }
+
+      // ── Store/App links ──────────────────────────────────────────────────────
+      var playStoreUrl = 'https://play.google.com/store/apps/details?id=com.vybein.vybein';
+      var appStoreUrl  = 'https://apps.apple.com/app/vybein/id0000000000'; // replace with real ID
+
+      var androidBtn = document.getElementById('androidBtn');
+      var iosBtn     = document.getElementById('iosBtn');
+
+      androidBtn.href = playStoreUrl;
+
+      var isIOS     = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      var isAndroid = /android/i.test(navigator.userAgent);
+
+      if (isIOS) {
+        iosBtn.style.display = 'block';
+        androidBtn.style.display = 'none';
+        iosBtn.href = appStoreUrl;
+      }
+
+      // ── Try to open the app first via custom scheme ─────────────────────────
+      // Works if the app is already installed
+      if (code && (isAndroid || isIOS)) {
+        try {
+          window.location.href = 'vybein://refer?code=' + encodeURIComponent(code);
+        } catch (e) { /* ignore */ }
+      }
+
+      // ── Auto-redirect countdown to store ────────────────────────────────────
+      var seconds = 3;
+      var timer = setInterval(function () {
+        seconds -= 1;
+        countdownEl.textContent = seconds;
+        if (seconds <= 0) {
+          clearInterval(timer);
+          if (isIOS) {
+            window.location.href = appStoreUrl;
+          } else {
+            window.location.href = playStoreUrl;
+          }
+        }
+      }, 1000);
+    })();
+  </script>
+</body>
+</html>

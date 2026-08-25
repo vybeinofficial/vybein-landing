@@ -1,0 +1,58 @@
+services:
+  - type: web
+    name: vybein-landing
+    env: node
+    region: oregon
+    plan: standard
+    branch: main
+
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_BASE_URL
+        value: https://api.vybein.com/api/v1
+      - key: NEXT_PUBLIC_SITE_URL
+        value: https://vybein.com
+
+    autoDeployOnPush: true
+
+    routes:
+      - type: redirect
+        source: /about.html
+        destination: /about
+        permanent: true
+      - type: redirect
+        source: /account-deletion.html
+        destination: /account-deletion
+        permanent: true
+      - type: redirect
+        source: /careers.html
+        destination: /careers
+        permanent: true
+      - type: redirect
+        source: /child-safety.html
+        destination: /child-safety
+        permanent: true
+      - type: redirect
+        source: /cookies.html
+        destination: /cookies
+        permanent: true
+      - type: redirect
+        source: /disclaimer.html
+        destination: /disclaimer
+        permanent: true
+      - type: redirect
+        source: /privacy.html
+        destination: /privacy
+        permanent: true
+      - type: redirect
+        source: /terms.html
+        destination: /terms
+        permanent: true
+      - type: redirect
+        source: /blogs/index.html
+        destination: /blogs
+        permanent: true

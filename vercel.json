@@ -1,0 +1,57 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "github": {
+    "silent": true
+  },
+  "redirects": [
+    { "source": "/about.html", "destination": "/", "permanent": true },
+    {
+      "source": "/account-deletion.html",
+      "destination": "/account-deletion",
+      "permanent": true
+    },
+    { "source": "/careers.html", "destination": "/", "permanent": true },
+    {
+      "source": "/child-safety.html",
+      "destination": "/child-safety",
+      "permanent": true
+    },
+    { "source": "/cookies.html", "destination": "/cookies", "permanent": true },
+    {
+      "source": "/disclaimer.html",
+      "destination": "/disclaimer",
+      "permanent": true
+    },
+    { "source": "/privacy.html", "destination": "/privacy", "permanent": true },
+    { "source": "/terms.html", "destination": "/terms", "permanent": true },
+    {
+      "source": "/blogs/index.html",
+      "destination": "/blogs",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    }
+  ]
+}

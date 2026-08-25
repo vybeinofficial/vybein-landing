@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #4b5563;
+  --brand: #2a7b76;
+  --brand-dark: #1f5c58;
+  --brand-light: #e6f2f1;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-light: var(--brand-light);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-outfit);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass-nav {
+  background: rgb(255 255 255 / 90%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgb(0 0 0 / 5%);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #f8fafc 0%, #e6f2f1 100%);
+}
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4 {
+  color: #111827;
+  font-weight: 700;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-content p,
+.blog-content li {
+  color: #374151;
+  line-height: 1.8;
+}
+
+.blog-content a {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+.blog-content ul,
+.blog-content ol {
+  padding-left: 1.25rem;
+  margin: 1rem 0;
+}
+
+/* Full-width CMS images (banners, infographics) — avoid hard crops */
+.blog-content img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 1rem;
+  background: linear-gradient(
+    180deg,
+    rgb(241 245 249 / 0.95),
+    rgb(226 232 240 / 0.9)
+  );
+}
+
+.blog-content figure {
+  margin: 1.5rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
