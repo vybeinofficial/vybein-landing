@@ -1,10 +1,32 @@
 import type { Metadata } from "next";
 import HomePage from "@/components/home/HomePage";
 
+const HOME_TITLE =
+  "Find Your Vibe Partner Nearby for Daily Activities | Vybein";
+const HOME_DESCRIPTION =
+  "Find nearby activity partners for Gym, Tea, Study, Travel, and everyday plans. Connect with real people safely without digital drama. Download Vybein today";
+
 export const metadata: Metadata = {
-  title: "Find your same vibe partner for everyday life",
-  description:
-    "Vybein helps you find real people nearby for gym, tea, dinner, travel, study, and more — no fake profiles, no digital drama. Safe, private, real meetups.",
+  title: {
+    absolute: HOME_TITLE,
+  },
+  description: HOME_DESCRIPTION,
+  openGraph: {
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    url: "https://vybein.com",
+    siteName: "Vybein",
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+  },
+  alternates: {
+    canonical: "https://vybein.com",
+  },
 };
 
 export default function Home() {

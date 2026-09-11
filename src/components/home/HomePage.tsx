@@ -113,18 +113,41 @@ export default function HomePage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({});
 
-  const faqStructuredData = useMemo(
+  const homeStructuredData = useMemo(
     () => ({
       "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: SITE_FAQ_ITEMS.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
+      "@graph": [
+        {
+          "@type": "WebSite",
+          name: "Vybein",
+          url: "https://vybein.com",
+          description:
+            "Find nearby activity partners for Gym, Tea, Study, Travel, and everyday plans. Connect with real people safely without digital drama. Download Vybein today",
         },
-      })),
+        {
+          "@type": "WebPage",
+          name: "Find Your Vibe Partner Nearby for Daily Activities | Vybein",
+          url: "https://vybein.com",
+          description:
+            "Find nearby activity partners for Gym, Tea, Study, Travel, and everyday plans. Connect with real people safely without digital drama. Download Vybein today",
+          isPartOf: {
+            "@type": "WebSite",
+            name: "Vybein",
+            url: "https://vybein.com",
+          },
+        },
+        {
+          "@type": "FAQPage",
+          mainEntity: SITE_FAQ_ITEMS.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        },
+      ],
     }),
     [],
   );
@@ -137,7 +160,7 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeStructuredData) }}
       />
 
       <Header />
