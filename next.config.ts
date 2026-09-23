@@ -41,12 +41,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.vybein.com" }],
-        destination: "https://vybein.com/:path*",
-        permanent: true,
-      },
-      {
         source: "/about.html",
         destination: "/about",
         permanent: true,
