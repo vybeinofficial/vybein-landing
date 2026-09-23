@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import HomePage from "@/components/home/HomePage";
 
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
 const HOME_TITLE =
   "Find Your Vibe Partner Nearby for Daily Activities | Vybein";
 const HOME_DESCRIPTION =
@@ -32,3 +35,4 @@ export const metadata: Metadata = {
 export default function Home() {
   return <HomePage />;
 }
+
