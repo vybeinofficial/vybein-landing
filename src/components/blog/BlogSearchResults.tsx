@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Blog } from "@/types/blog";
 import { decodeHtmlEntities, formatBlogDate } from "@/lib/blogs";
+import BlogThumbImage from "@/components/blog/BlogThumbImage";
 
 const placeholder = "https://placehold.co/1200x700/e5ecef/74828a?text=Vybein+Blog";
 
@@ -63,15 +63,11 @@ export default function BlogSearchResults({ query, blogs, page, total, totalPage
             key={blog.id}
             className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
           >
-            <div className="relative aspect-[1600/654] w-full">
-              <Image
-                src={blog.thumbnail || placeholder}
-                alt={blog.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-              />
-            </div>
+            <BlogThumbImage
+              src={blog.thumbnail || placeholder}
+              alt={blog.title}
+              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            />
             <div className="flex flex-1 flex-col p-6">
               <p className="text-xs uppercase tracking-wide text-gray-500">{formatBlogDate(blog.createdAt)}</p>
               <h2 className="mt-2 text-xl font-bold text-gray-900 line-clamp-2 leading-snug">

@@ -53,6 +53,14 @@ services:
         destination: /terms
         permanent: true
       - type: redirect
+        source: /download
+        destination: https://play.google.com/store/apps/details?id=com.vybein.vybein&pcampaignid=web_share
+        permanent: true
+      - type: redirect
+        source: /download/
+        destination: https://play.google.com/store/apps/details?id=com.vybein.vybein&pcampaignid=web_share
+        permanent: true
+      - type: redirect
         source: /blogs/index.html
         destination: /blogs
         permanent: true

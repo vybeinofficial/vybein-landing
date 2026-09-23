@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogDownloadCta from "@/components/blog/BlogDownloadCta";
 import BlogScrollDepthTracker from "@/components/blog/BlogScrollDepthTracker";
 import BlogFeaturedImage from "@/components/blog/BlogFeaturedImage";
+import BlogThumbImage from "@/components/blog/BlogThumbImage";
 import BlogReadingAssist from "@/components/blog/BlogReadingAssist";
 import BlogShareRow from "@/components/blog/BlogShareRow";
 import BlogDetailClientFallback from "./BlogDetailClientFallback";
 import { getBlogTopicKeywordLabels, pickRelatedBlogsByTopicRelevance, slugifyBlogTopic } from "@/lib/blog-topics";
-import { buildBlogFaqJsonLd, extractBlogFaqItems } from "@/lib/blog-faq";
+import { extractBlogFaqItems } from "@/lib/blog-faq";
+import { buildBlogStructuredData } from "@/lib/blog-schema";
 import {
     blogTitleFromSlug,
     decodeHtmlEntities,
@@ -63,7 +64,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
             alternates: {
                 canonical: `${SITE_URL}/blogs/${slug}`,
             },
-            robots: { index: true, follow: true },
+            robots: { index: false, follow: true },
         };
     }
 
@@ -101,25 +102,18 @@ function BlogCard({ blog, compact = false }: { blog: Awaited<ReturnType<typeof g
     return (
         <article className={`group rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md ${compact ? "p-4" : "overflow-hidden"}`}>
             {compact ? (
-                <div className="relative mb-3 aspect-[1600/654] overflow-hidden rounded-xl bg-gray-100">
-                    <Image
-                        src={blog.thumbnail || fallbackImage}
-                        alt={blog.title}
-                        fill
-                        className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                        sizes="(max-width: 1024px) 100vw, 340px"
-                    />
-                </div>
+                <BlogThumbImage
+                    src={blog.thumbnail || fallbackImage}
+                    alt={blog.title}
+                    sizes="(max-width: 1024px) 100vw, 340px"
+                    className="mb-3 rounded-xl"
+                />
             ) : (
-                <div className="relative aspect-[1600/654] overflow-hidden bg-gray-100">
-                    <Image
-                        src={blog.thumbnail || fallbackImage}
-                        alt={blog.title}
-                        fill
-                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
-                        sizes="(max-width: 768px) 100vw, 320px"
-                    />
-                </div>
+                <BlogThumbImage
+                    src={blog.thumbnail || fallbackImage}
+                    alt={blog.title}
+                    sizes="(max-width: 768px) 100vw, 320px"
+                />
             )}
             <div className={compact ? "space-y-2" : "p-5 space-y-3"}>
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand/80">
@@ -166,60 +160,9 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
     const contentHtml = sanitizeBlogHtml(contentWithIds || "");
     const headings = extractHeadings(contentWithIds);
     const canonicalUrl = `${SITE_URL}/blogs/${blog.slug}`;
-    const articleImage = blog.ogImage || blog.thumbnail || `${SITE_URL}/logo.png`;
-    const createdAtIso = new Date(blog.createdAt || Date.now()).toISOString();
-    const updatedAtIso = new Date(blog.updatedAt || blog.createdAt || Date.now()).toISOString();
-    const articleDescription = decodeHtmlEntities(
-        blog.seoDescription || blog.excerpt || "Explore the latest Vybein story, ideas, and community updates.",
-    );
     const postFaqs = extractBlogFaqItems(blog, 5);
-    const articleSchema = {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        headline: blog.seoTitle || blog.title,
-        description: articleDescription,
-        image: [articleImage],
-        datePublished: createdAtIso,
-        dateModified: updatedAtIso,
-        author: {
-            "@type": "Person",
-            name: blog.author || "Vybein",
-        },
-        publisher: {
-            "@type": "Organization",
-            name: "Vybein",
-            logo: {
-                "@type": "ImageObject",
-                url: `${SITE_URL}/logo.png`,
-            },
-        },
-        mainEntityOfPage: canonicalUrl,
-    };
-    const breadcrumbSchema = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-            {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: SITE_URL,
-            },
-            {
-                "@type": "ListItem",
-                position: 2,
-                name: "Blogs",
-                item: `${SITE_URL}/blogs`,
-            },
-            {
-                "@type": "ListItem",
-                position: 3,
-                name: blog.title,
-                item: canonicalUrl,
-            },
-        ],
-    };
-    const blogFaqSchema = postFaqs.length > 0 ? buildBlogFaqJsonLd(postFaqs) : null;
+    const { article: articleSchema, breadcrumb: breadcrumbSchema, faq: blogFaqSchema } =
+        buildBlogStructuredData(blog);
 
     return (
         <>

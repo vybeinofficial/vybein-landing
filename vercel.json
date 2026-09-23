@@ -26,12 +26,31 @@
     { "source": "/privacy.html", "destination": "/privacy", "permanent": true },
     { "source": "/terms.html", "destination": "/terms", "permanent": true },
     {
+      "source": "/download",
+      "destination": "https://play.google.com/store/apps/details?id=com.vybein.vybein&pcampaignid=web_share",
+      "statusCode": 301
+    },
+    {
+      "source": "/download/",
+      "destination": "https://play.google.com/store/apps/details?id=com.vybein.vybein&pcampaignid=web_share",
+      "statusCode": 301
+    },
+    {
       "source": "/blogs/index.html",
       "destination": "/blogs",
       "permanent": true
     }
   ],
   "headers": [
+    {
+      "source": "/press.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [

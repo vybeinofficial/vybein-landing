@@ -12,8 +12,13 @@ export default function Footer() {
                             <span className="font-heading font-bold text-2xl text-brand-dark">Vybein</span>
                         </div>
                         <p className="text-sm text-gray-600 mb-6 max-w-sm">
-                            Vybein helps you find nearby people for real-life activities like gym, tea, study, travel, and everyday social connection.
+                            Find nearby activity partners for gym, tea, study, and everyday plans. Private in-app chat, free browsing, and safety tools designed with women first.
                         </p>
+                        <ul className="space-y-2 text-sm text-gray-700">
+                            <li>Free &amp; open browsing — no photo paywall</li>
+                            <li>Chat in-app — no phone or email sharing</li>
+                            <li>ID verified profiles · share meetup details safely</li>
+                        </ul>
                     </div>
 
                     <div>

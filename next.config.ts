@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
@@ -39,7 +40,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Redirect HTML files to clean URLs
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.vybein.com" }],
+        destination: "https://vybein.com/:path*",
+        permanent: true,
+      },
       {
         source: "/about.html",
         destination: "/about",
@@ -87,7 +93,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/press.html",
+        destination: "/press",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
-

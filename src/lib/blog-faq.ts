@@ -86,6 +86,63 @@ const parseFaqLike = (value: unknown): BlogFaqItem[] => {
   return parseNumberedFaqFields(obj);
 };
 
+const decodeEntities = (value: string) =>
+  value
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const collectFaqs = (items: BlogFaqItem[], limit: number) => {
+  const deduped: BlogFaqItem[] = [];
+  const seen = new Set<string>();
+  for (const row of items) {
+    const question = decodeEntities(row.question);
+    const answer = decodeEntities(row.answer);
+    if (question.length < 8 || answer.length < 8 || !question.includes("?")) continue;
+    const key = question.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    deduped.push({ question, answer });
+    if (deduped.length >= limit) break;
+  }
+  return deduped;
+};
+
+export function extractFaqsFromHtml(html: string, limit = 5): BlogFaqItem[] {
+  if (!html) return [];
+
+  const details: BlogFaqItem[] = [];
+  const detailsRe =
+    /<details[^>]*>\s*<summary[^>]*>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/gi;
+  for (const match of html.matchAll(detailsRe)) {
+    const item = {
+      question: stripHtml(match[1] || ""),
+      answer: stripHtml(match[2] || ""),
+    };
+    if (item.question && item.answer) details.push(item);
+  }
+  if (details.length > 0) return collectFaqs(details, limit);
+
+  const faqHeadingRe =
+    /<(h2|h3)[^>]*>\s*(?:.*?frequently asked questions.*?|.*?faqs?.*?)\s*<\/\1>([\s\S]*?)(?=<(?:h1|h2)[^>]*>|$)/i;
+  const sectionMatch = html.match(faqHeadingRe);
+  const section = sectionMatch?.[2] || html;
+  const headingPairs: BlogFaqItem[] = [];
+  const pairRe =
+    /<(h3|h4|p|strong|button)[^>]*>([\s\S]*?\?)\s*<\/\1>\s*(?:<(?:p|div)[^>]*>)([\s\S]*?)(?:<\/(?:p|div)>)/gi;
+  for (const match of section.matchAll(pairRe)) {
+    const question = stripHtml(match[2] || "");
+    const answer = stripHtml(match[3] || "");
+    if (question && answer) headingPairs.push({ question, answer });
+  }
+  return collectFaqs(headingPairs, limit);
+}
+
 export function extractBlogFaqItems(blog: unknown, limit = 5): BlogFaqItem[] {
   const rows = parseFaqLike(blog).filter((item) => item.question.length > 2 && item.answer.length > 2);
   const deduped: BlogFaqItem[] = [];
@@ -98,6 +155,15 @@ export function extractBlogFaqItems(blog: unknown, limit = 5): BlogFaqItem[] {
     if (deduped.length >= limit) break;
   }
   return deduped;
+}
+
+export function resolveBlogFaqItems(blog: unknown, limit = 5): BlogFaqItem[] {
+  const fromFields = extractBlogFaqItems(blog, limit);
+  if (fromFields.length > 0) return fromFields;
+  if (!blog || typeof blog !== "object") return [];
+  const content = (blog as { content?: unknown }).content;
+  if (typeof content !== "string" || !content.trim()) return [];
+  return extractFaqsFromHtml(content, limit);
 }
 
 export function buildBlogFaqJsonLd(items: BlogFaqItem[]) {

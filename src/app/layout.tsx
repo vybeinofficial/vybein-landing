@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -14,9 +15,10 @@ const outfit = Outfit({
 });
 
 const GA4_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID;
+const canonicalSite = SITE_URL.replace(/\/$/, "");
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vybein.com"),
+  metadataBase: new URL(canonicalSite),
   title: {
     default: "Vybein | Discover Events. Join Activities.",
     template: "%s | Vybein",
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
     title: "Vybein | Discover Events. Join Activities.",
     description:
       "Discover concerts, sports events, and activities near you. Join premium experiences with Vybein.",
-    url: "https://vybein.com",
+    url: canonicalSite,
     siteName: "Vybein",
     locale: "en_IN",
     type: "website",
@@ -48,7 +50,7 @@ export const metadata: Metadata = {
     images: ["/logo.png"],
   },
   alternates: {
-    canonical: "https://vybein.com",
+    canonical: canonicalSite,
   },
   icons: {
     icon: "/logo.png",

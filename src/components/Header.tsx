@@ -16,6 +16,7 @@ export default function Header() {
     }, []);
 
     return (
+        <header>
         <nav className="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
@@ -59,9 +60,10 @@ export default function Header() {
                             className="text-gray-900"
                             aria-controls="mobileMenu"
                             aria-expanded={isHydrated ? mobileMenuOpen : false}
+                            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                             onClick={() => setMobileMenuOpen((value) => !value)}
                         >
-                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
@@ -106,5 +108,6 @@ export default function Header() {
                 ) : null}
             </div>
         </nav>
+        </header>
     );
 }

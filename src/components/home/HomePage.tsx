@@ -9,17 +9,18 @@ import { GOOGLE_PLAY_URL } from "@/lib/site";
 import { SITE_FAQ_ITEMS } from "@/lib/site-faq";
 import { trackEvent } from "@/lib/analytics";
 
-const MEDIA_CDN = "https://vybein-media.sgp1.cdn.digitaloceanspaces.com";
+const HOME_GYM_TOGETHER = "/home/gym-together.jpg";
+const HOME_ACTIVITIES_NEAR_YOU = "/home/activities-near-you.jpg";
+const HOME_FIND_PARTNERS_LANDSCAPE = "/home/find-partners-landscape.jpg";
+const HOME_FIND_PARTNERS_PORTRAIT = "/home/find-partners-portrait.jpg";
 
-/** Final CTA section — mobile-only promo art (portrait). */
-const DOWNLOAD_CTA_MOBILE_BANNER_URL =
-  `${MEDIA_CDN}/image/upload/WhatsApp_Image_2026-05-01_at_10.03.19_PM_gqxfgy.jpg`;
-
-/** How it works — phone mockup screen (app UI screenshot). */
-const HOW_IT_WORKS_MOCKUP_IMAGE_URL =
-  `${MEDIA_CDN}/image/upload/1st_image_1_ms1ztg.png`;
-
-type SplitSide = { src: string; alt: string; label: string; priority?: boolean };
+type SplitSide = {
+  src: string;
+  alt: string;
+  label: string;
+  priority?: boolean;
+  fetchPriority?: "high" | "low" | "auto";
+};
 
 function SectionEyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
@@ -35,10 +36,14 @@ function SplitTransformation({
   left,
   right,
   className = "",
+  sizes = "(max-width: 768px) 50vw, 400px",
+  quality,
 }: {
   left: SplitSide;
   right: SplitSide;
   className?: string;
+  sizes?: string;
+  quality?: number;
 }) {
   return (
     <div
@@ -50,8 +55,10 @@ function SplitTransformation({
           alt={left.alt}
           fill
           priority={Boolean(left.priority)}
+          fetchPriority={left.fetchPriority ?? (left.priority ? "high" : undefined)}
+          quality={quality}
           className="object-cover brightness-[0.48] saturate-[0.65] contrast-[1.05] transition duration-700 group-hover:brightness-[0.52]"
-          sizes="(max-width: 768px) 50vw, 400px"
+          sizes={sizes}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent" aria-hidden />
         <span className="absolute bottom-3 left-3 md:bottom-4 md:left-4 rounded-full border border-white/10 bg-black/50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md">
@@ -64,8 +71,10 @@ function SplitTransformation({
           alt={right.alt}
           fill
           priority={Boolean(right.priority)}
+          fetchPriority={right.fetchPriority}
+          quality={quality}
           className="object-cover brightness-[1.02] saturate-[1.06] transition duration-700 group-hover:brightness-[1.06]"
-          sizes="(max-width: 768px) 50vw, 400px"
+          sizes={sizes}
         />
         <span className="absolute bottom-3 right-3 md:bottom-4 md:right-4 rounded-full border border-white/20 bg-brand px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">
           {right.label}
@@ -165,6 +174,7 @@ export default function HomePage() {
 
       <Header />
 
+      <main>
       {/* 1. Hero */}
       <section
         className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-[#eef6f5] to-white pt-28 pb-16 md:pt-36 md:pb-28 lg:pt-40 lg:pb-32"
@@ -183,13 +193,13 @@ export default function HomePage() {
             <div>
               <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-brand/25 bg-white/90 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-dark shadow-sm backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
-                Alone → Connected
+                Built for women first · Safe, private, free to browse
               </p>
               <h1 className="font-heading text-balance text-4xl font-bold leading-[1.06] tracking-tight text-gray-900 sm:text-5xl lg:text-[3.25rem] lg:leading-[1.05]">
                 Find People with Your Vibe for Real Life
               </h1>
               <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-gray-600 sm:text-xl">
-                Meet genuine people nearby for gym, tea, study, travel, and everyday plans — no fake profiles, no digital drama.
+                Meet genuine activity partners nearby for gym, tea, study, travel, and everyday plans — no fake profiles, no digital drama.
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <a
@@ -221,22 +231,20 @@ export default function HomePage() {
               <p className="mt-4 text-sm font-medium text-gray-500">Android is live today. iOS version is coming soon.</p>
               <ul className="mt-10 flex flex-wrap gap-3 text-sm font-medium text-gray-700">
                 <li className="inline-flex items-center gap-2 rounded-full border border-gray-200/80 bg-white/90 px-4 py-2 shadow-sm backdrop-blur-sm">
-                  <span className="text-base" aria-hidden>
-                    🔒
-                  </span>
-                  No personal info shared
+                  <span aria-hidden>✅</span>
+                  100% free browsing
                 </li>
                 <li className="inline-flex items-center gap-2 rounded-full border border-gray-200/80 bg-white/90 px-4 py-2 shadow-sm backdrop-blur-sm">
-                  <span className="text-base" aria-hidden>
-                    👥
-                  </span>
-                  Nearby real people
+                  <span aria-hidden>🔒</span>
+                  Private in-app chat
                 </li>
                 <li className="inline-flex items-center gap-2 rounded-full border border-gray-200/80 bg-white/90 px-4 py-2 shadow-sm backdrop-blur-sm">
-                  <span className="text-base" aria-hidden>
-                    💬
-                  </span>
-                  Safe &amp; private
+                  <span aria-hidden>🪪</span>
+                  ID verified profiles
+                </li>
+                <li className="inline-flex items-center gap-2 rounded-full border border-gray-200/80 bg-white/90 px-4 py-2 shadow-sm backdrop-blur-sm">
+                  <span aria-hidden>💬</span>
+                  No phone or email exposed
                 </li>
               </ul>
               <div className="mt-8 flex flex-wrap items-center gap-4 text-sm">
@@ -256,6 +264,7 @@ export default function HomePage() {
                   alt: "Person working alone at a laptop in a quiet moment",
                   label: "Alone",
                   priority: true,
+                  fetchPriority: "high",
                 }}
                 right={{
                   src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800",
@@ -277,11 +286,12 @@ export default function HomePage() {
           <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-gray-200/80 bg-gray-100 shadow-2xl shadow-gray-900/10 ring-1 ring-black/[0.04]">
               <Image
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=900"
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=720"
                 alt="Thoughtful person reflecting — emotional, relatable moment"
                 fill
                 className="object-cover object-top"
                 sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={70}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900/55 via-transparent to-transparent" aria-hidden />
             </div>
@@ -341,14 +351,16 @@ export default function HomePage() {
             <div className="rounded-[1.75rem] border border-gray-200/80 bg-white/80 p-4 shadow-md shadow-gray-900/5 backdrop-blur-sm md:p-5">
               <p className="mb-4 text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-500">Gym</p>
               <SplitTransformation
+                sizes="(max-width: 768px) 50vw, 280px"
+                quality={70}
                 left={{
-                  src: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800",
+                  src: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=640",
                   alt: "Working out alone in the gym",
                   label: "Alone",
                 }}
                 right={{
-                  src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=800",
-                  alt: "Training together with a gym partner",
+                  src: HOME_GYM_TOGETHER,
+                  alt: "Training together with a gym activity partner",
                   label: "With partner",
                 }}
               />
@@ -356,13 +368,15 @@ export default function HomePage() {
             <div className="rounded-[1.75rem] border border-gray-200/80 bg-white/80 p-4 shadow-md shadow-gray-900/5 backdrop-blur-sm md:p-5">
               <p className="mb-4 text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-500">Dinner</p>
               <SplitTransformation
+                sizes="(max-width: 768px) 50vw, 280px"
+                quality={70}
                 left={{
-                  src: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=800",
+                  src: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=640",
                   alt: "Eating alone at home",
                   label: "Alone",
                 }}
                 right={{
-                  src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=800",
+                  src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=640",
                   alt: "Friends sharing a meal at a restaurant",
                   label: "Group + split bill",
                 }}
@@ -371,13 +385,15 @@ export default function HomePage() {
             <div className="rounded-[1.75rem] border border-gray-200/80 bg-white/80 p-4 shadow-md shadow-gray-900/5 backdrop-blur-sm md:p-5">
               <p className="mb-4 text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-500">Study</p>
               <SplitTransformation
+                sizes="(max-width: 768px) 50vw, 280px"
+                quality={70}
                 left={{
-                  src: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800",
+                  src: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=640",
                   alt: "Studying alone with laptop",
                   label: "Alone",
                 }}
                 right={{
-                  src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800",
+                  src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=640",
                   alt: "Group of friends laughing together outdoors",
                   label: "Group discussion",
                 }}
@@ -386,13 +402,15 @@ export default function HomePage() {
             <div className="rounded-[1.75rem] border border-gray-200/80 bg-white/80 p-4 shadow-md shadow-gray-900/5 backdrop-blur-sm md:p-5">
               <p className="mb-4 text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-500">From scroll to real life</p>
               <SplitTransformation
+                sizes="(max-width: 768px) 50vw, 280px"
+                quality={70}
                 left={{
-                  src: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800",
+                  src: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=640",
                   alt: "Person on phone — bored scrolling",
                   label: "Scrolling",
                 }}
                 right={{
-                  src: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800",
+                  src: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=640",
                   alt: "Friends chatting over tea at a cafe",
                   label: "Tea meetup",
                 }}
@@ -436,11 +454,12 @@ export default function HomePage() {
             </div>
             <div className="relative aspect-[5/4] overflow-hidden rounded-[2rem] border border-white/15 shadow-2xl shadow-black/40 ring-1 ring-white/10">
               <Image
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=900"
+                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=720"
                 alt="Happy relaxed group sharing a meal together"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={70}
               />
             </div>
           </div>
@@ -451,19 +470,15 @@ export default function HomePage() {
       <section className="border-t border-gray-100 bg-white py-20 md:py-28" id="how-it-works">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
-            <div className="relative mx-auto w-full max-w-[300px] sm:max-w-[320px]">
-              <div className="absolute -inset-6 rounded-[2.75rem] bg-gradient-to-br from-brand/25 via-teal-200/20 to-transparent blur-2xl" aria-hidden />
-              <div className="relative rounded-[2.5rem] border-[11px] border-gray-800 bg-gradient-to-b from-gray-800 to-gray-900 shadow-2xl shadow-gray-900/40">
-                <div className="relative aspect-[9/19] min-h-[200px] overflow-hidden rounded-[1.65rem] bg-gray-100">
-                  <Image
-                    src={HOW_IT_WORKS_MOCKUP_IMAGE_URL}
-                    alt="Vybein app home screen — what’s your vibe, plans, and people nearby"
-                    fill
-                    className="object-cover object-top"
-                    sizes="(max-width: 640px) 300px, 320px"
-                    unoptimized
-                  />
-                </div>
+            <div className="relative w-full overflow-hidden rounded-[1.75rem] border border-gray-200/80 bg-brand-dark shadow-2xl shadow-gray-900/10 ring-1 ring-black/[0.04]">
+              <div className="relative aspect-[16/10]">
+                <Image
+                  src={HOME_ACTIVITIES_NEAR_YOU}
+                  alt="Vybein app showing activities near you and activity partners on your phone"
+                  fill
+                  className="object-contain object-center"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
               </div>
             </div>
             <div>
@@ -472,7 +487,7 @@ export default function HomePage() {
                 Simple &amp; Real
               </h2>
               <ol className="relative mt-10 space-y-0 pl-2">
-                {["Choose your vibe", "Find nearby people", "Connect & meet"].map((step, i) => (
+                {["Choose your activity", "Find activity partners nearby", "Connect & meet"].map((step, i) => (
                   <li key={step} className="relative flex gap-5 pb-10 last:pb-0">
                     {i < 2 ? (
                       <span
@@ -500,44 +515,86 @@ export default function HomePage() {
       {/* 6. Trust */}
       <section className="bg-gradient-to-b from-gray-50 to-white py-20 md:py-28" id="trust">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
-            <div className="order-2 lg:order-1">
-              <SectionEyebrow>Trust &amp; safety</SectionEyebrow>
-              <h2 className="font-heading text-balance text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
-                Safe, Real &amp; Private
-              </h2>
-              <ul className="mt-10 space-y-4 text-lg text-gray-700">
-                {["No personal information oversharing", "No fake profiles", "No digital drama", "Genuine people nearby"].map((line) => (
-                  <li key={line} className="flex items-start gap-4">
-                    <span
-                      className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/15 text-sm font-bold text-brand"
-                      aria-hidden
-                    >
-                      ✓
-                    </span>
-                    <span className="leading-relaxed">{line}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-8 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-600">
-                Built for genuine social connection with privacy-first behavior and real-world intent.
-              </p>
-            </div>
-            <div className="order-1 lg:order-2">
-              <div className="relative mx-auto max-w-md overflow-hidden rounded-[2rem] border border-gray-200/90 bg-white shadow-2xl shadow-gray-900/10 ring-1 ring-black/[0.04]">
-                <div className="relative aspect-[4/3]">
-                  <Image
-                    src={`${MEDIA_CDN}/image/upload/WhatsApp_Image_2026-05-01_at_10.03.18_PM_m6dgqi.jpg`}
-                    alt="Person using phone with a sense of trust and control"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 400px"
-                  />
-                </div>
-                <div className="border-t border-gray-100 bg-gradient-to-r from-gray-50/80 to-white px-5 py-4">
-                  <p className="text-sm font-semibold text-gray-900">Vybein on your phone</p>
-                  <p className="mt-0.5 text-xs text-gray-500">Private by design · Real people first</p>
-                </div>
+          <div className="mx-auto max-w-3xl text-center">
+            <SectionEyebrow>Trust &amp; safety</SectionEyebrow>
+            <h2 className="font-heading text-balance text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+              Safety, privacy, and open browsing first
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-gray-600 md:text-lg">
+              Understand what Vybein is before you install: real activity partners nearby, private chat, and no hidden charges — designed with female safety as the first priority.
+            </p>
+          </div>
+
+          <div className="mt-12 rounded-2xl border border-brand/20 bg-brand-light/40 px-5 py-4 text-center text-sm font-medium text-brand-dark md:text-base">
+            Public profiles never show your mobile number or email. Chat stays in the app.
+          </div>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-2 lg:gap-10">
+            <ul className="space-y-5 text-lg text-gray-700">
+              {[
+                {
+                  title: "100% Free & Open Browsing",
+                  body: "Zero hidden charges. No browsing paywalls. Profile and gallery photos are free to view.",
+                },
+                {
+                  title: "Complete Privacy",
+                  body: "Secure in-app chat. You never need to share your mobile number or email to connect.",
+                },
+                {
+                  title: "Verified Profiles",
+                  body: "ID/Selfie verified badges, plus an anti-dating and anti-rental community policy.",
+                },
+                {
+                  title: "Share with Family & Friends",
+                  body: "Share meetup location and timing so people close to you know where you are going.",
+                },
+                {
+                  title: "Transparent Refund",
+                  body: "If a paid activity is cancelled, the amount is refunded instantly to your wallet.",
+                },
+              ].map((item) => (
+                <li key={item.title} className="flex items-start gap-4">
+                  <span
+                    className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/15 text-sm font-bold text-brand"
+                    aria-hidden
+                  >
+                    ✓
+                  </span>
+                  <span className="leading-relaxed">
+                    <span className="font-semibold text-gray-900">{item.title}</span>
+                    {" — "}
+                    {item.body}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-gray-200/80 bg-brand-dark shadow-xl sm:row-span-2">
+                <Image
+                  src={HOME_FIND_PARTNERS_PORTRAIT}
+                  alt="Find activity partners nearby in the Vybein app"
+                  fill
+                  className="object-contain object-center"
+                  sizes="(max-width: 640px) 100vw, 40vw"
+                />
+              </div>
+              <div className="relative aspect-[16/10] overflow-hidden rounded-[1.5rem] border border-gray-200/80 bg-gray-900 shadow-lg">
+                <Image
+                  src={HOME_ACTIVITIES_NEAR_YOU}
+                  alt="Activities near you on Vybein"
+                  fill
+                  className="object-contain object-center"
+                  sizes="(max-width: 640px) 100vw, 30vw"
+                />
+              </div>
+              <div className="relative aspect-[16/10] overflow-hidden rounded-[1.5rem] border border-gray-200/80 bg-white shadow-lg">
+                <Image
+                  src={HOME_GYM_TOGETHER}
+                  alt="Verified real-life meetup with an activity partner"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, 30vw"
+                />
               </div>
             </div>
           </div>
@@ -602,12 +659,12 @@ export default function HomePage() {
               </blockquote>
               <p className="text-sm text-gray-500">Stories from people building real routines together.</p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-gray-200/80 shadow-2xl shadow-gray-900/10 ring-1 ring-black/[0.04]">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-gray-200/80 bg-gray-900 shadow-2xl shadow-gray-900/10 ring-1 ring-black/[0.04]">
               <Image
-                src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80&w=900"
-                alt="Smiling friends — real connection"
+                src={HOME_FIND_PARTNERS_LANDSCAPE}
+                alt="Friends meeting as activity partners — real connection"
                 fill
-                className="object-cover"
+                className="object-contain object-center"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
@@ -638,7 +695,7 @@ export default function HomePage() {
                 href={GOOGLE_PLAY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative block w-full max-w-[280px]"
+                className="relative block w-full max-w-[320px]"
                 onClick={() =>
                   trackEvent("download_click", {
                     cta_name: "final_cta_phone_mockup",
@@ -646,15 +703,14 @@ export default function HomePage() {
                   })
                 }
               >
-                <div className="rounded-[2rem] border-[10px] border-gray-700 bg-gray-900 p-2 shadow-2xl">
-                  <div className="relative aspect-[9/16] min-h-[200px] overflow-hidden rounded-2xl bg-brand">
+                <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-brand-dark shadow-2xl">
+                  <div className="relative aspect-[3/4]">
                     <Image
-                      src={DOWNLOAD_CTA_MOBILE_BANNER_URL}
-                      alt="Download Vybein on Google Play"
+                      src={HOME_FIND_PARTNERS_PORTRAIT}
+                      alt="Find activity partners nearby — download Vybein"
                       fill
-                      className="object-cover object-top"
-                      sizes="(max-width: 1024px) 280px, 320px"
-                      unoptimized
+                      className="object-contain object-center"
+                      sizes="(max-width: 1024px) 320px, 320px"
                     />
                   </div>
                 </div>
@@ -708,6 +764,7 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+      </main>
 
       <Footer />
 

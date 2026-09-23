@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
@@ -7,6 +6,7 @@ import Footer from "@/components/Footer";
 import { SITE_URL } from "@/lib/site";
 import { decodeHtmlEntities, formatBlogDate, getAllPublishedBlogsForHubs } from "@/lib/blogs";
 import { getTopicHubBySlug, sortBlogsNewestFirst } from "@/lib/blog-topics";
+import BlogThumbImage from "@/components/blog/BlogThumbImage";
 
 type Props = { params: Promise<{ topic: string }> };
 
@@ -44,6 +44,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical },
+    robots:
+      hub.blogs.length < 2
+        ? { index: false, follow: true }
+        : { index: true, follow: true },
     openGraph: {
       title,
       description,
@@ -129,15 +133,11 @@ export default async function BlogTopicHubPage({ params }: Props) {
                   key={blog.id}
                   className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
                 >
-                  <div className="relative aspect-[1600/654] w-full">
-                    <Image
-                      src={blog.thumbnail || placeholder}
-                      alt={blog.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    />
-                  </div>
+                  <BlogThumbImage
+                    src={blog.thumbnail || placeholder}
+                    alt={blog.title}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  />
                   <div className="flex flex-1 flex-col p-6">
                     <p className="text-xs uppercase tracking-wide text-gray-500">{formatBlogDate(blog.createdAt)}</p>
                     <h2 className="mt-2 text-xl font-bold text-gray-900 line-clamp-2 leading-snug">

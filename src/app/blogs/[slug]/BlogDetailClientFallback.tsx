@@ -8,6 +8,7 @@ import BlogFeaturedImage from "@/components/blog/BlogFeaturedImage";
 import BlogReadingAssist from "@/components/blog/BlogReadingAssist";
 import BlogShareRow from "@/components/blog/BlogShareRow";
 import { extractBlogFaqItems } from "@/lib/blog-faq";
+import { buildBlogStructuredData } from "@/lib/blog-schema";
 import { decodeHtmlEntities, extractHeadings, formatBlogDate, getBlogDisplayTags, injectHeadingIds, sanitizeBlogHtml } from "@/lib/blogs";
 import { API_BASE_URL, SITE_URL } from "@/lib/site";
 
@@ -68,6 +69,10 @@ export default function BlogDetailClientFallback({ slug }: Props) {
     const tocItems = useMemo(() => extractHeadings(contentWithIds), [contentWithIds]);
     const displayTags = useMemo(() => (blog ? getBlogDisplayTags(blog) : []), [blog]);
     const postFaqs = useMemo(() => (blog ? extractBlogFaqItems(blog, 5) : []), [blog]);
+    const structuredData = useMemo(
+        () => (blog ? buildBlogStructuredData(blog) : null),
+        [blog],
+    );
     const shareUrl = useMemo(
         () => (typeof window !== "undefined" ? window.location.href : `${SITE_URL}/blogs/${blog?.slug || slug}`),
         [blog?.slug, slug],
@@ -106,6 +111,24 @@ export default function BlogDetailClientFallback({ slug }: Props) {
 
     return (
         <main className="min-h-screen hero-gradient text-gray-900">
+            {structuredData ? (
+                <>
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.article) }}
+                    />
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.breadcrumb) }}
+                    />
+                    {structuredData.faq ? (
+                        <script
+                            type="application/ld+json"
+                            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.faq) }}
+                        />
+                    ) : null}
+                </>
+            ) : null}
             <BlogReadingAssist tocItems={tocItems} />
             <section className="hero-gradient pt-28 md:pt-32 pb-10 md:pb-14">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

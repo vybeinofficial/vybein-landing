@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Blog } from "@/types/blog";
 import { decodeHtmlEntities, formatBlogDate } from "@/lib/blogs";
+import BlogThumbImage from "@/components/blog/BlogThumbImage";
 
 const placeholder = "https://placehold.co/1200x700/e5ecef/74828a?text=Vybein+Blog";
 
@@ -29,16 +29,13 @@ export default function BlogIndexListing({ blogs, page }: Props) {
       {!featuredBlog ? null : (
         <article className="mb-8 md:mb-10 overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
           <div className="grid lg:grid-cols-2">
-            <div className="relative aspect-[1600/654] w-full bg-gradient-to-b from-slate-100 to-slate-200/60 lg:h-full lg:min-h-64">
-              <Image
-                src={featuredBlog.thumbnail || placeholder}
-                alt={featuredBlog.title}
-                fill
-                priority
-                className="object-contain object-center"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <BlogThumbImage
+              src={featuredBlog.thumbnail || placeholder}
+              alt={featuredBlog.title}
+              priority
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="bg-gradient-to-b from-slate-100 to-slate-200/60 lg:h-full lg:min-h-64"
+            />
             <div className="flex flex-col justify-center p-6 sm:p-8 md:p-10">
               <p className="mb-3 text-xs uppercase tracking-wide text-gray-500">
                 Featured — {formatBlogDate(featuredBlog.createdAt)}
@@ -62,15 +59,11 @@ export default function BlogIndexListing({ blogs, page }: Props) {
               key={blog.id}
               className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
             >
-              <div className="relative aspect-[1600/654] w-full">
-                <Image
-                  src={blog.thumbnail || placeholder}
-                  alt={blog.title}
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                />
-              </div>
+              <BlogThumbImage
+                src={blog.thumbnail || placeholder}
+                alt={blog.title}
+                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+              />
               <div className="flex flex-1 flex-col p-6">
                 <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">{formatBlogDate(blog.createdAt)}</p>
                 <h2 className="mb-2 line-clamp-2 text-xl font-bold text-gray-900">{blog.title}</h2>

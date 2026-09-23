@@ -20,6 +20,7 @@ const staticPaths: Array<{
   { path: "/child-safety", changeFrequency: "yearly", priority: 0.4 },
   { path: "/cookies", changeFrequency: "yearly", priority: 0.3 },
   { path: "/disclaimer", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/download", changeFrequency: "monthly", priority: 0.9 },
   { path: "/faq", changeFrequency: "monthly", priority: 0.75 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.5 },
   { path: "/refer", changeFrequency: "monthly", priority: 0.8 },
@@ -53,12 +54,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
   const topicIndex = buildTopicHubIndex(blogs);
-  const topicEntries: MetadataRoute.Sitemap = Array.from(topicIndex.values()).map((hub) => ({
-    url: `${base}/blogs/topics/${encodeURIComponent(hub.slug)}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.72,
-  }));
+  const topicEntries: MetadataRoute.Sitemap = Array.from(topicIndex.values())
+    .filter((hub) => hub.blogs.length >= 2)
+    .map((hub) => ({
+      url: `${base}/blogs/topics/${encodeURIComponent(hub.slug)}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.72,
+    }));
 
   return [...staticEntries, ...blogEntries, ...topicEntries];
 }
