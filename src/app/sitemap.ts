@@ -39,11 +39,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  const blogs = await fetchAllPublishedBlogsForSitemap();
+  let blogs: Awaited<ReturnType<typeof fetchAllPublishedBlogsForSitemap>> = [];
+  try {
+    blogs = await fetchAllPublishedBlogsForSitemap();
+  } catch (error) {
+    console.error("[sitemap] blog fetch failed; returning static URLs only", error);
+  }
+
   const blogEntries: MetadataRoute.Sitemap = blogs
     .filter((blog) => !blog.noIndex && blog.slug)
     .map((blog) => ({
-      url: `${base}/blogs/${encodeURIComponent(blog.slug)}`,
+      url: `${base}/blogs/${blog.slug}`,
       lastModified: blog.updatedAt
         ? new Date(blog.updatedAt)
         : blog.createdAt
@@ -57,7 +63,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const topicEntries: MetadataRoute.Sitemap = Array.from(topicIndex.values())
     .filter((hub) => hub.blogs.length >= 2)
     .map((hub) => ({
-      url: `${base}/blogs/topics/${encodeURIComponent(hub.slug)}`,
+      url: `${base}/blogs/topics/${hub.slug}`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.72,
