@@ -34,7 +34,7 @@ npm run dev
 Required:
 
 - `NEXT_PUBLIC_API_BASE_URL` (example: `https://api.vybein.com/api/v1`)
-- `NEXT_PUBLIC_SITE_URL` (example: `https://vybein.com`)
+- `NEXT_PUBLIC_SITE_URL` (example: `https://www.vybein.com`)
 - `NEXT_PUBLIC_GA4_MEASUREMENT_ID` (example: `G-XXXXXXXXXX`, required for GA4 tracking)
 
 ## Validation Commands

@@ -15,7 +15,7 @@ services:
       - key: NEXT_PUBLIC_API_BASE_URL
         value: https://api.vybein.com/api/v1
       - key: NEXT_PUBLIC_SITE_URL
-        value: https://vybein.com
+        value: https://www.vybein.com
 
     autoDeployOnPush: true
 

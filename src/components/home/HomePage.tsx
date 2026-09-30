@@ -3,6 +3,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SITE_FAQ_ITEMS } from "@/lib/site-faq";
+import { SITE_URL } from "@/lib/site";
 import HomeFaqAccordion from "@/components/home/HomeFaqAccordion";
 import HomeHeroActions from "@/components/home/HomeHeroActions";
 import PlayStoreButton from "@/components/home/PlayStoreButton";
@@ -91,26 +92,28 @@ function SplitTransformation({
   );
 }
 
+const homeCanonical = SITE_URL.replace(/\/$/, "");
+
 const homeStructuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebSite",
       name: "Vybein",
-      url: "https://vybein.com",
+      url: homeCanonical,
       description:
         "Find nearby activity partners for Gym, Tea, Study, Travel, and everyday plans. Connect with real people safely without digital drama. Download Vybein today",
     },
     {
       "@type": "WebPage",
       name: "Find Your Vibe Partner Nearby for Daily Activities | Vybein",
-      url: "https://vybein.com",
+      url: homeCanonical,
       description:
         "Find nearby activity partners for Gym, Tea, Study, Travel, and everyday plans. Connect with real people safely without digital drama. Download Vybein today",
       isPartOf: {
         "@type": "WebSite",
         name: "Vybein",
-        url: "https://vybein.com",
+        url: homeCanonical,
       },
     },
     {

@@ -1,4 +1,4 @@
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://vybein.com";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.vybein.com";
 
 /** Blog/API base URL. Set `API_BASE_URL` on Vercel (server-only) to the public HTTPS API so SSR stays correct even if `NEXT_PUBLIC_API_BASE_URL` is localhost for local dev builds. Client code still falls back to `NEXT_PUBLIC_*` then default. */
 export const API_BASE_URL =
