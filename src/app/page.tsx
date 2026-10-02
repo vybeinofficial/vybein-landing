@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import HomePage from "@/components/home/HomePage";
+import JsonLd from "@/components/JsonLd";
+import { HOME_DESCRIPTION, HOME_TITLE, buildHomeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
-
-const HOME_TITLE =
-  "Find Your Vibe Partner Nearby for Daily Activities | Vybein";
-const HOME_DESCRIPTION =
-  "Find nearby activity partners for Gym, Tea, Study, Travel, and everyday plans. Connect with real people safely without digital drama. Download Vybein today";
 
 const homeCanonical = SITE_URL.replace(/\/$/, "");
 
@@ -36,6 +33,11 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <HomePage />;
+  return (
+    <>
+      <JsonLd id="vybein-home-schema" data={buildHomeJsonLd()} />
+      <HomePage />
+    </>
+  );
 }
 

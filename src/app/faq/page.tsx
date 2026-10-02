@@ -4,10 +4,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SITE_URL } from "@/lib/site";
 import { SITE_FAQ_ITEMS, buildFaqPageJsonLd } from "@/lib/site-faq";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "FAQ | Vybein",
-  description: "Answers about Vybein, privacy, platforms, and how we differ from typical dating or chat apps.",
+  description: "How does the Vybein app work? Is your number safe? Get direct answers to all your important questions to make new friends without any fear.",
   alternates: {
     canonical: `${SITE_URL}/faq`,
   },
@@ -18,7 +19,7 @@ export default function FaqPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd id="vybein-faq-schema" data={jsonLd} />
       <Header />
       <main className="min-h-screen bg-white">
         <section className="hero-gradient border-b border-gray-100 pt-28 pb-12 md:pt-32 md:pb-16">

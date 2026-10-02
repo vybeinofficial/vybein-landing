@@ -3,7 +3,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
+import { buildBlogIndexJsonLd } from "@/lib/json-ld";
 import BlogTopicsExplorer from "@/components/blog/BlogTopicsExplorer";
 import BlogSearchBar from "@/components/blog/BlogSearchBar";
 import BlogSearchResults from "@/components/blog/BlogSearchResults";
@@ -29,7 +31,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     title: raw ? `“${label}” — Blog search` : page > 1 ? `Blog — Page ${page}` : "Blog",
     description: raw
       ? `Vybein blog posts matching “${label}”.`
-      : "Read Vybein stories, event tips, and activity updates.",
+      : "Alone in a new place? Read real tips on the Vybein blog to improve your social life, choose a travel partner, and increase confidence.",
     alternates: {
       canonical: raw ? `${SITE_URL}/blogs` : page > 1 ? `${SITE_URL}/blogs?page=${page}` : `${SITE_URL}/blogs`,
       types: {
@@ -82,6 +84,7 @@ export default async function BlogsPage({ searchParams }: PageProps) {
 
   return (
     <>
+      <JsonLd id="vybein-blog-index-schema" data={buildBlogIndexJsonLd()} />
       <Header />
       <main className="min-h-screen bg-white">
         <section className="hero-gradient pt-24 pb-16 md:pt-28 md:pb-20">

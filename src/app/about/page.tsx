@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
+import { buildAboutJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
     title: "About Us | Vybein",
-    description: "Learn about Vybein's mission to create safe, interest-based communities where people connect, learn, and grow through controlled digital interaction.",
+    description: "Say goodbye to loneliness in a new city. Vybein is a safe social platform that helps you find verified friends for offline activities.",
     alternates: {
         canonical: `${SITE_URL}/about`,
     },
@@ -14,6 +16,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
     return (
         <>
+            <JsonLd id="vybein-about-schema" data={buildAboutJsonLd()} />
             <Header />
             <main className="min-h-screen bg-white">
                 {/* Hero Section */}

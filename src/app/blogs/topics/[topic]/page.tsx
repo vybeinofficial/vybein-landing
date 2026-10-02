@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import { decodeHtmlEntities, formatBlogDate, getAllPublishedBlogsForHubs } from "@/lib/blogs";
 import { getTopicHubBySlug, sortBlogsNewestFirst } from "@/lib/blog-topics";
@@ -101,8 +102,8 @@ export default async function BlogTopicHubPage({ params }: Props) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <JsonLd id="vybein-topic-breadcrumb-schema" data={breadcrumbSchema} />
+      <JsonLd id="vybein-topic-collection-schema" data={collectionSchema} />
       <Header />
       <main className="min-h-screen bg-white">
         <section className="hero-gradient pt-24 pb-10 md:pt-28 md:pb-12">

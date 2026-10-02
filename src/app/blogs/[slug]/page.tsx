@@ -12,6 +12,7 @@ import BlogDetailClientFallback from "./BlogDetailClientFallback";
 import { getBlogTopicKeywordLabels, pickRelatedBlogsByTopicRelevance, slugifyBlogTopic } from "@/lib/blog-topics";
 import { extractBlogFaqItems } from "@/lib/blog-faq";
 import { buildBlogStructuredData } from "@/lib/blog-schema";
+import JsonLd from "@/components/JsonLd";
 import {
     blogTitleFromSlug,
     decodeHtmlEntities,
@@ -166,20 +167,9 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
 
     return (
         <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-            />
-            {!blogFaqSchema ? null : (
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(blogFaqSchema) }}
-                />
-            )}
+            <JsonLd id="vybein-blog-article-schema" data={articleSchema} />
+            <JsonLd id="vybein-blog-breadcrumb-schema" data={breadcrumbSchema} />
+            {!blogFaqSchema ? null : <JsonLd id="vybein-blog-faq-schema" data={blogFaqSchema} />}
             <BlogScrollDepthTracker slug={blog.slug} />
             <BlogReadingAssist tocItems={headings} />
             <Header />

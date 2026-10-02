@@ -9,6 +9,7 @@ import BlogReadingAssist from "@/components/blog/BlogReadingAssist";
 import BlogShareRow from "@/components/blog/BlogShareRow";
 import { extractBlogFaqItems } from "@/lib/blog-faq";
 import { buildBlogStructuredData } from "@/lib/blog-schema";
+import { serializeJsonLd } from "@/lib/json-ld";
 import { decodeHtmlEntities, extractHeadings, formatBlogDate, getBlogDisplayTags, injectHeadingIds, sanitizeBlogHtml } from "@/lib/blogs";
 import { API_BASE_URL, SITE_URL } from "@/lib/site";
 
@@ -115,16 +116,16 @@ export default function BlogDetailClientFallback({ slug }: Props) {
                 <>
                     <script
                         type="application/ld+json"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.article) }}
+                        dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData.article) }}
                     />
                     <script
                         type="application/ld+json"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.breadcrumb) }}
+                        dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData.breadcrumb) }}
                     />
                     {structuredData.faq ? (
                         <script
                             type="application/ld+json"
-                            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData.faq) }}
+                            dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData.faq) }}
                         />
                     ) : null}
                 </>

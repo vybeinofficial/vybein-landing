@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import JsonLd from "@/components/JsonLd";
+import { buildGlobalJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
@@ -73,6 +75,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <JsonLd id="vybein-global-schema" data={buildGlobalJsonLd()} />
+      </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {GA4_MEASUREMENT_ID ? (
           <>

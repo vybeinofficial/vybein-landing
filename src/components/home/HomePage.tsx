@@ -3,7 +3,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SITE_FAQ_ITEMS } from "@/lib/site-faq";
-import { SITE_URL } from "@/lib/site";
+import { HOME_FAQ_COUNT } from "@/lib/json-ld";
 import HomeFaqAccordion from "@/components/home/HomeFaqAccordion";
 import HomeHeroActions from "@/components/home/HomeHeroActions";
 import PlayStoreButton from "@/components/home/PlayStoreButton";
@@ -92,52 +92,9 @@ function SplitTransformation({
   );
 }
 
-const homeCanonical = SITE_URL.replace(/\/$/, "");
-
-const homeStructuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      name: "Vybein",
-      url: homeCanonical,
-      description:
-        "Find nearby activity partners for Gym, Tea, Study, Travel, and everyday plans. Connect with real people safely without digital drama. Download Vybein today",
-    },
-    {
-      "@type": "WebPage",
-      name: "Find Your Vibe Partner Nearby for Daily Activities | Vybein",
-      url: homeCanonical,
-      description:
-        "Find nearby activity partners for Gym, Tea, Study, Travel, and everyday plans. Connect with real people safely without digital drama. Download Vybein today",
-      isPartOf: {
-        "@type": "WebSite",
-        name: "Vybein",
-        url: homeCanonical,
-      },
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: SITE_FAQ_ITEMS.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      })),
-    },
-  ],
-};
-
 export default function HomePage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeStructuredData) }}
-      />
-
       <Header />
 
       <main>
@@ -661,7 +618,7 @@ export default function HomePage() {
           <p className="mx-auto mt-3 max-w-lg text-center text-sm text-gray-500">
             Quick answers about Vybein, safety, privacy, and how we&apos;re different from typical chat or social apps.
           </p>
-          <HomeFaqAccordion items={SITE_FAQ_ITEMS.slice(0, 5)} />
+          <HomeFaqAccordion items={SITE_FAQ_ITEMS.slice(0, HOME_FAQ_COUNT)} />
           <p className="mt-8 text-center text-sm text-gray-500">
             <Link href="/faq" className="font-semibold text-brand hover:text-brand-dark transition">
               View all on the FAQ page →
