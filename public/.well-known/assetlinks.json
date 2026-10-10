@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.vybein.vybein",
+      "sha256_cert_fingerprints": [
+        "4B:94:BA:62:42:B6:07:04:AF:7B:7D:B3:06:A9:9A:DE:2D:5E:3E:1C:9D:73:6D:CB:72:43:AA:68:4A:96:BE:9F"
+      ]
+    }
+  }
+]

@@ -42,6 +42,20 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Apex → www, except /.well-known/ (Android App Links verification must not redirect).
+      // Requires vybein.com to be attached to Production in Vercel Domains, not set to "Redirect".
+      {
+        source: "/",
+        has: [{ type: "host", value: "vybein.com" }],
+        destination: "https://www.vybein.com/",
+        permanent: true,
+      },
+      {
+        source: "/:path((?!\\.well-known(?:/|$)).*)",
+        has: [{ type: "host", value: "vybein.com" }],
+        destination: "https://www.vybein.com/:path",
+        permanent: true,
+      },
       {
         source: "/about.html",
         destination: "/about",
@@ -91,6 +105,13 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        source: "/.well-known/assetlinks.json",
+        headers: [
+          { key: "Content-Type", value: "application/json" },
+          { key: "Cache-Control", value: "public, max-age=3600" },
+        ],
+      },
       {
         source: "/home/:path*",
         headers: [
