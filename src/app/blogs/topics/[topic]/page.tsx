@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import { decodeHtmlEntities, formatBlogDate, getAllPublishedBlogsForHubs } from "@/lib/blogs";
-import { getTopicHubBySlug, sortBlogsNewestFirst } from "@/lib/blog-topics";
+import { getTopicHubBySlug, isTopicHubIndexable, sortBlogsNewestFirst } from "@/lib/blog-topics";
 import BlogThumbImage from "@/components/blog/BlogThumbImage";
 
 type Props = { params: Promise<{ topic: string }> };
@@ -45,10 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical },
-    robots:
-      hub.blogs.length < 2
-        ? { index: false, follow: true }
-        : { index: true, follow: true },
+    robots: isTopicHubIndexable(hub)
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
     openGraph: {
       title,
       description,

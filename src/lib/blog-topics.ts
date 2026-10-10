@@ -19,6 +19,13 @@ export function getBlogTopicKeywordLabels(blog: Blog): string[] {
   return Array.from(new Set(parts));
 }
 
+/** Hubs with at least this many posts are indexable and listed in the sitemap. Keep both in sync. */
+export const MIN_INDEXABLE_TOPIC_POSTS = 1;
+
+export function isTopicHubIndexable(hub: TopicHubEntry): boolean {
+  return hub.blogs.length >= MIN_INDEXABLE_TOPIC_POSTS;
+}
+
 export type TopicHubEntry = {
   slug: string;
   label: string;

@@ -161,11 +161,13 @@ export default function HomePage() {
                   src: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=70&w=640",
                   alt: "Person working alone at a laptop in a quiet moment",
                   label: "Alone",
+                  priority: true,
                 }}
                 right={{
                   src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=70&w=640",
                   alt: "Group of friends laughing together outdoors",
                   label: "Connected",
+                  priority: true,
                 }}
               />
               <p className="mt-4 text-center text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">

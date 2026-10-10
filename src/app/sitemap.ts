@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { buildTopicHubIndex } from "@/lib/blog-topics";
+import { buildTopicHubIndex, isTopicHubIndexable } from "@/lib/blog-topics";
 import { fetchAllPublishedBlogsForSitemap } from "@/lib/blogs";
 import { SITE_URL } from "@/lib/site";
 
@@ -61,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const topicIndex = buildTopicHubIndex(blogs);
   const topicEntries: MetadataRoute.Sitemap = Array.from(topicIndex.values())
-    .filter((hub) => hub.blogs.length >= 2)
+    .filter(isTopicHubIndexable)
     .map((hub) => ({
       url: `${base}/blogs/topics/${hub.slug}`,
       lastModified: new Date(),
