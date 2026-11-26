@@ -41,3 +41,4 @@ yarn-error.log*
 # typescript 1
 *.tsbuildinfo
 next-env.d.ts
+# new one
