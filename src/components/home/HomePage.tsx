@@ -580,7 +580,7 @@ export default function HomePage() {
               <h2 className="font-heading text-balance text-3xl font-bold leading-tight md:text-4xl lg:text-[2.65rem] lg:leading-[1.12]">
                 Stop Feeling Alone, Stressed, or Frustrated. Start Living Happily.
               </h2>
-              <p className="mt-6 text-xl font-semibold text-brand-light">Find Your Tribe on Vybein Today</p>
+              <p className="mt-6 text-xl font-semibold text-brand-light">Start on Vybein Today</p>
               <div className="mt-10">
                 <PlayStoreButton />
               </div>
